@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+        <form action="/login" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <input type="submit" value="Выйти"/>
+        </form>
+    </div>
+{{#bat}}
+<a href="/courier" role="button">Просмотреть все заказы</a>	
+{{/bat}}
+<h1>Вот твои заказы</h1>
+<div>
+{{#orders}}
+        <div>
+		<b>{{id}}</b>
+		<span>{{title}}</span>
+		<span>{{address}}</span>
+		{{#battonOne}}
+		<a href="/courier?id={{id}}" >Взять заказ</a>
+		{{/battonOne}}
+		{{#battonTwo}}
+		<form method="post" action="courier">
+		<input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+			<button type="submit" name ="idOperator" value={{id}}>Не успеваю</button>
+		</form>
+		<a href="/deletebid?idOrder={{id}}" role="button">Посылку доставили</a>	
+		{{/battonTwo}}
+		</div>   
+{{/orders}}
+</div> 
+</body>
+</html>
