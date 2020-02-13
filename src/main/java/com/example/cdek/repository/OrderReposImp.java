@@ -10,8 +10,7 @@ import com.example.cdek.model.OrderClient;
 
 @Component
 public class OrderReposImp implements OrderRepository{
-	
-	
+		
     private JdbcTemplate jdbcTemplate;
  
     @Autowired
@@ -28,34 +27,31 @@ public class OrderReposImp implements OrderRepository{
     public List<OrderClient> findAllStatus(String value) {
     	return jdbcTemplate.query("select * from orders where status = '" + value + "'", ROW_MAPPER);
     }
-    
- 
+     
     @Override
-    public OrderClient findOne(String id) {
-    	OrderClient orderClient = null;
-        orderClient = jdbcTemplate.queryForObject("select * from orders where id = ?", new Object[]{id}, ROW_MAPPER);
-        return orderClient;
+    public List<OrderClient> findOrder(String id) {
+        return jdbcTemplate.query("select * from orders where id_order = '" + id + "'", ROW_MAPPER);
     }
  
     @Override
     public int save(OrderClient orderClient) {
-    	return jdbcTemplate.update("INSERT INTO `orders` (`id`, `title`, `address`, `status`, `datenot`) VALUES "
+    	return jdbcTemplate.update("INSERT INTO `orders` (`id_order`, `title`, `address`, `status`, `datenot`) VALUES "
     			+ "(NULL, ' " + orderClient.getTitle() + " ', '"+ orderClient.getAddress() +"', 'COURIER', '')");    	 
     }    
  
     @Override
     public int delete(int id) {
-    	return jdbcTemplate.update("delete from orders where id = ?", id);
+    	return jdbcTemplate.update("delete from orders where id_order = ?", id);
     }
 
 	@Override
 	public int changeStatus(String value, String id) {
-		return jdbcTemplate.update("UPDATE `orders` SET `status` = '" + value + "' WHERE `orders`.`id` = '" + id + "'");
+		return jdbcTemplate.update("UPDATE `orders` SET `status` = '" + value + "' WHERE `orders`.`id_order` = '" + id + "'");
 	}
 
 	@Override
 	public int changeDate(String value, String id) {
-		return jdbcTemplate.update("UPDATE `orders` SET `datenot` = '" + value + "' WHERE `orders`.`id` = '" + id + "'");
+		return jdbcTemplate.update("UPDATE `orders` SET `datenot` = '" + value + "' WHERE `orders`.`id_order` = '" + id + "'");
 	}
 
 }

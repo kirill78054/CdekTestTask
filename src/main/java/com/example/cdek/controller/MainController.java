@@ -21,11 +21,9 @@ public class MainController {
 	
 	@Autowired
 	UserReposImpl userReposImpl;
-	
-	
+		
     @GetMapping("/")
-    public String greeting(Map<String, Object> model) {	
-    	
+    public String greeting(Map<String, Object> model) {	  	
         return "redirect:/main";
     }
 
@@ -34,10 +32,10 @@ public class MainController {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	if(auth.getName() != null && !auth.getName().equals("anonymousUser")) {
         	String role = userReposImpl.findRoleUser(auth.getName());
-        	if(role.equals("COURIER")) {
+        	if(role.equals("2")) {
         		return "redirect:/courier";
         	}
-        	if(role.equals("OPERATOR")) {
+        	if(role.equals("3")) {
         		return "redirect:/operator";
         	}
     	}   	
@@ -67,18 +65,14 @@ public class MainController {
     		Map<String, OrderClient> model, 
     		Map<String, Object> modelOne) {
     	
-    	Iterable<OrderClient> orderClient = null;
-    	OrderClient order = null;
+    	Iterable<OrderClient> orderClient;
         if (search != null && !search.isEmpty()) {       	
-        	order = orderReposImp.findOne(search);
-        	model.put("orders", order);
+        	orderClient = orderReposImp.findOrder(search);
         } else {
         	orderClient = orderReposImp.findAll();
-        	modelOne.put("orders", orderClient);
         }
+        modelOne.put("orders", orderClient);
         return "main";
     }
-    
-    
-    
+            
 }

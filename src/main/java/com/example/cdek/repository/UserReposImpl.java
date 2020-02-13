@@ -26,12 +26,12 @@ public class UserReposImpl implements UserRepository {
 
 	@Override
 	public int add(UserProf user) {
-		return jdbcTemplate.update("INSERT INTO `usr` (`id`, `active`, `password`, `username`, `role`) VALUES (NULL, b'1', '" + user.getPassword() + "', '" + user.getUsername() +"', '" + user.getRoles() + "')");
+		return jdbcTemplate.update("INSERT INTO `usr` (`id`, `active`, `password`, `username`, `id_role`) VALUES (NULL, b'1', '" + user.getPassword() + "', '" + user.getUsername() +"', '" + user.getRoles() + "')");
 	}
 
 	@Override
 	public int delete(int id) {
-		return jdbcTemplate.update("delete from `orders` where id = ?", id);
+		return jdbcTemplate.update("delete from `orders` where id_order = ?", id);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class UserReposImpl implements UserRepository {
 	@Override
 	public String findRoleUser(String userName) {
 		String UserProf = null;
-		UserProf = jdbcTemplate.queryForObject("SELECT role FROM usr WHERE username=?", String.class, userName);		
+		UserProf = jdbcTemplate.queryForObject("SELECT id_role FROM usr WHERE username=?", String.class, userName);		
         return UserProf;
 	}
 

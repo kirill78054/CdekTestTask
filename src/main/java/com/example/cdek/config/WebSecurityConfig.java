@@ -30,15 +30,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logout()
                     .permitAll();
     }
-    
-    
+       
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
         		.dataSource(dataSource)
         		.passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .usersByUsernameQuery("select username, password, active from usr where username=?")
-                .authoritiesByUsernameQuery("select u.username, u.role from usr u where u.username=?");
+                .authoritiesByUsernameQuery("select u.username, u.id_role from usr u where u.username=?");
     }
     
 }

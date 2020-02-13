@@ -29,7 +29,7 @@ public class RegistrationController {
             model.put("message", "Пользователь с таким логином уже существует!");
             return "registration";
         }
-		if(username == null || password == null || role == null) {
+		if(username.equals("") || password.equals("")) {
 			model.put("message", "Вы заполнили не все поля");
 			return "registration";
 		}
@@ -38,6 +38,5 @@ public class RegistrationController {
 		userReposImpl.add(user);				
 		return "redirect:/login";
 	}
-	
-	
+		
 }

@@ -18,12 +18,12 @@ import com.example.cdek.repository.OrderReposImp;
 public class CourierController {
 		
 	@Autowired
-	OrderReposImp orderReposImp;
-		
+	OrderReposImp orderReposImp;	
+	
 	@GetMapping("/courier")
     public String orderAll(Map<String, Object> model, 
     		@RequestParam(required = false, defaultValue = "") String id) {	
-		
+						
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();		
 		Iterable<OrderClient> orderClient;
 		boolean battonOne, battonTwo;
@@ -34,6 +34,7 @@ public class CourierController {
 	    	battonTwo = true;
 	    	model.put("battonOne", battonOne);
 	    	model.put("battonTwo", battonTwo);
+	    	id=null;
 		}else {
 			battonOne = true;
 			battonTwo = false;
@@ -45,11 +46,9 @@ public class CourierController {
 				orderClient = orderReposImp.findAllStatus("COURIER");
 				model.put("battonOne",battonOne);
 				model.put("battonTwo", battonTwo);
-			}	
-			
+			}				
 		}
-		
-        model.put("orders", orderClient);
+        model.put("orders", orderClient);		
         return "courier";
     }
 	
@@ -61,13 +60,13 @@ public class CourierController {
 			orderReposImp.changeStatus("OPERATOR", idOperator);
 			orderReposImp.changeDate(date, idOperator);
 		}
-		return "courier";
+		return "redirect:/courier";
 	}
 	
 	@GetMapping("/deleteOrder")
     public String deleteOrder(@RequestParam int idOrder) {
     	orderReposImp.delete(idOrder);
         return "redirect:/courier";
-    } 
-		
+    }
+	
 }

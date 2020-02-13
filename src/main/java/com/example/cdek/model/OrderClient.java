@@ -3,8 +3,6 @@ package com.example.cdek.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-
-
 @Entity
 public class OrderClient {
 
@@ -69,9 +67,8 @@ public class OrderClient {
 	}
 
 	@Override
-	public String toString() {
-		
-		return "id равен = " + id + ", название равен = " + title;
+	public String toString() {		
+		return "id равен = " + id + ", название равен = " + title + ", address = " + address;
 	}
 	
 }
