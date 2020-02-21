@@ -16,57 +16,57 @@ import com.example.cdek.repository.OrderReposImp;
 
 @Controller
 public class CourierController {
-		
+	
 	@Autowired
-	OrderReposImp orderReposImp;	
+	private OrderReposImp orderReposImp;
 	
 	@GetMapping("/courier")
-    public String orderAll(Map<String, Object> model, 
-    		@RequestParam(required = false, defaultValue = "") String id) {	
-						
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();		
+	public String orderAll(Map<String, Object> model, @RequestParam(required = false, defaultValue = "") String id) {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Iterable<OrderClient> orderClient;
-		boolean battonOne, battonTwo;
-		if(id != null &&  !id.isEmpty()) {
+		boolean isBattonOne, isBattonTwo;
+		if (id != null && !id.isEmpty()) {
 			orderReposImp.changeStatus(auth.getName(), id);
-	    	orderClient = orderReposImp.findAllStatus(auth.getName());
-	    	battonOne = false;
-	    	battonTwo = true;
-	    	model.put("battonOne", battonOne);
-	    	model.put("battonTwo", battonTwo);
-	    	id=null;
-		}else {
-			battonOne = true;
-			battonTwo = false;
-			if(orderReposImp.findAllStatus(auth.getName()) != null &&  !orderReposImp.findAllStatus(auth.getName()).isEmpty()) {
+			orderClient = orderReposImp.findAllStatus(auth.getName());
+			isBattonOne = false;
+			isBattonTwo = true;
+			model.put("battonOne", isBattonOne);
+			model.put("battonTwo", isBattonTwo);
+			id = null;
+		} else {
+			isBattonOne = true;
+			isBattonTwo = false;
+			if (orderReposImp.findAllStatus(auth.getName()) != null
+					&& !orderReposImp.findAllStatus(auth.getName()).isEmpty()) {
 				orderClient = orderReposImp.findAllStatus(auth.getName());
-				model.put("battonOne",battonOne);
-				model.put("battonTwo", battonTwo);
-			}else {
+				model.put("battonOne", isBattonOne);
+				model.put("battonTwo", isBattonTwo);
+			} else {
 				orderClient = orderReposImp.findAllStatus("COURIER");
-				model.put("battonOne",battonOne);
-				model.put("battonTwo", battonTwo);
-			}				
+				model.put("battonOne", isBattonOne);
+				model.put("battonTwo", isBattonTwo);
+			}
 		}
-        model.put("orders", orderClient);		
-        return "courier";
-    }
-	
+		model.put("orders", orderClient);
+		return "courier";
+	}
+
 	@PostMapping("courier")
-	public String addOperator(Map<String, Object> model, 
-    		@RequestParam(required = false, defaultValue = "") String idOperator) {
+	public String addOperator(Map<String, Object> model,
+			@RequestParam(required = false, defaultValue = "") String idOperator) {
 		String date = LocalDateTime.now().toString("MM/dd/yyyy HH:mm:ss");
-		if(idOperator != null && !idOperator.isEmpty()) {
+		if (idOperator != null && !idOperator.isEmpty()) {
 			orderReposImp.changeStatus("OPERATOR", idOperator);
 			orderReposImp.changeDate(date, idOperator);
 		}
 		return "redirect:/courier";
 	}
-	
+
 	@GetMapping("/deleteOrder")
-    public String deleteOrder(@RequestParam int idOrder) {
-    	orderReposImp.delete(idOrder);
-        return "redirect:/courier";
-    }
-	
+	public String deleteOrder(@RequestParam int idOrder) {
+		orderReposImp.delete(idOrder);
+		return "redirect:/courier";
+	}
+
 }

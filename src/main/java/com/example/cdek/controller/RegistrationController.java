@@ -16,27 +16,28 @@ public class RegistrationController {
 	
 	@Autowired
 	private UserReposImpl userReposImpl;
-	
+
 	@GetMapping("/registration")
 	public String registration() {
 		return "registration";
 	}
-	
+
 	@PostMapping("/registration")
-	public String addUser(@RequestParam String username, @RequestParam String password, @RequestParam String role, Map<String, Object> model) {
+	public String addUser(@RequestParam String username, @RequestParam String password, @RequestParam String role,
+			Map<String, Object> model) {
 		String userFromDb = userReposImpl.findOne(username);
 		if (userFromDb != null) {
-            model.put("message", "Пользователь с таким логином уже существует!");
-            return "registration";
-        }
-		if(username.equals("") || password.equals("")) {
+			model.put("message", "Пользователь с таким логином уже существует!");
+			return "registration";
+		}
+		if (username.equals("") || password.equals("")) {
 			model.put("message", "Вы заполнили не все поля");
 			return "registration";
 		}
 		UserProf user = new UserProf(null, username, password, role);
 		user.setActive(true);
-		userReposImpl.add(user);				
+		userReposImpl.add(user);
 		return "redirect:/login";
 	}
-		
+
 }

@@ -2,6 +2,7 @@ package com.example.cdek.repository;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +12,7 @@ import com.example.cdek.model.UserProf;
 
 @Component
 public class UserReposImpl implements UserRepository {
-	
+	private static final Logger log = Logger.getLogger(UserReposImpl.class);
 	private JdbcTemplate jdbcTemplate;
 	 
     @Autowired
@@ -39,7 +40,9 @@ public class UserReposImpl implements UserRepository {
 		String UserProf = null;
 		try {
 		UserProf = jdbcTemplate.queryForObject("SELECT username FROM usr WHERE username=?", String.class, userName);
-		} catch (DataAccessException dataAccessException) {     
+		} catch (DataAccessException dataAccessException) {  
+			log.error("Исключение типа: " + dataAccessException);
+			return null;
         }
         return UserProf;
 	}

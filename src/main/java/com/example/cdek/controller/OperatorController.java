@@ -15,63 +15,61 @@ import com.example.cdek.repository.OrderReposImp;
 
 @Controller
 public class OperatorController {
-	
+
 	@Autowired
-	OrderReposImp orderReposImp;
-		
+	private OrderReposImp orderReposImp;
+
 	@GetMapping("operator")
-    public String bidAll(Map<String, Object> model, 
-    		@RequestParam(required = false, defaultValue = "") String id) {	
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();		
+	public String bidAll(Map<String, Object> model, @RequestParam(required = false, defaultValue = "") String id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Iterable<OrderClient> orderClient;
-		boolean battonOne, battonTwo;
-		if(id != null &&  !id.isEmpty()) {
+		boolean isBattonOne, isBattonTwo;
+		if (id != null && !id.isEmpty()) {
 			orderReposImp.changeStatus(auth.getName(), id);
-	    	orderClient = orderReposImp.findAllStatus(auth.getName());
-	    	battonOne = false;
-	    	battonTwo = true;
-	    	model.put("battonOne", battonOne);
-	    	model.put("battonTwo", battonTwo);
-	    	id=null;
-		}else {
-			battonOne = true;
-			battonTwo = false;
-			if(orderReposImp.findAllStatus(auth.getName()) != null &&  !orderReposImp.findAllStatus(auth.getName()).isEmpty()) {
+			orderClient = orderReposImp.findAllStatus(auth.getName());
+			isBattonOne = false;
+			isBattonTwo = true;
+			model.put("battonOne", isBattonOne);
+			model.put("battonTwo", isBattonTwo);
+			id = null;
+		} else {
+			isBattonOne = true;
+			isBattonTwo = false;
+			if (orderReposImp.findAllStatus(auth.getName()) != null
+					&& !orderReposImp.findAllStatus(auth.getName()).isEmpty()) {
 				orderClient = orderReposImp.findAllStatus(auth.getName());
-				model.put("battonOne",battonOne);
-				model.put("battonTwo", battonTwo);
-			}else {
+				model.put("battonOne", isBattonOne);
+				model.put("battonTwo", isBattonTwo);
+			} else {
 				orderClient = orderReposImp.findAllStatus("OPERATOR");
-				model.put("battonOne",battonOne);
-				model.put("battonTwo", battonTwo);
-			}				
+				model.put("battonOne", isBattonOne);
+				model.put("battonTwo", isBattonTwo);
+			}
 		}
-        model.put("orders", orderClient);
-        return "operator";
-    }
-	
+		model.put("orders", orderClient);
+		return "operator";
+	}
+
 	@PostMapping("/searchBid")
-    public String SearcBid(
-    		@RequestParam String searchBid, 
-    		Map<String, Object> model) {
-		
-    	Iterable<OrderClient> orderClient;
-    	boolean battonOne = true, battonTwo = false;
-        if (searchBid != null && !searchBid.isEmpty()) {  
-        	orderClient = orderReposImp.findOrder(searchBid);
-        } else {
-        	orderClient = orderReposImp.findAllStatus("OPERATOR");      	
-        }
-        model.put("orders", orderClient);
-        model.put("battonOne",battonOne);
+	public String SearcBid(@RequestParam String searchBid, Map<String, Object> model) {
+
+		Iterable<OrderClient> orderClient;
+		boolean battonOne = true, battonTwo = false;
+		if (searchBid != null && !searchBid.isEmpty()) {
+			orderClient = orderReposImp.findOrder(searchBid);
+		} else {
+			orderClient = orderReposImp.findAllStatus("OPERATOR");
+		}
+		model.put("orders", orderClient);
+		model.put("battonOne", battonOne);
 		model.put("battonTwo", battonTwo);
-        return "operator";
-    }
-	
+		return "operator";
+	}
+
 	@GetMapping("/deletebid")
-    public String deleteOrder(@RequestParam String idOrder) {
+	public String deleteOrder(@RequestParam String idOrder) {
 		orderReposImp.changeStatus("COURIER", idOrder);
-        return "redirect:/operator";
-    } 
-	
+		return "redirect:/operator";
+	}
+
 }
