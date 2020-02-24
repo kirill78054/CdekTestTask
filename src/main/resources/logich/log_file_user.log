@@ -1,0 +1,1 @@
+2020-02-24 17:18:53 INFO  beans:64 http-nio-8080-exec-5hread - Detected multiple classes with the same name, "com.example.cdek.model.OrderClient". Assuming it was a class-reloading. Clearing class introspection caches to release old data.

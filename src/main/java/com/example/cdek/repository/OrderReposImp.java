@@ -25,12 +25,12 @@ public class OrderReposImp implements OrderRepository{
     
     @Override
     public List<OrderClient> findAllStatus(String value) {
-    	return jdbcTemplate.query("select * from orders where status = '" + value + "'", ROW_MAPPER);
+    	return jdbcTemplate.query("select * from orders where status = ?", ROW_MAPPER, value);
     }
      
     @Override
     public List<OrderClient> findOrder(String id) {
-        return jdbcTemplate.query("select * from orders where id_order = '" + id + "'", ROW_MAPPER);
+        return jdbcTemplate.query("select * from orders where id_order = ?", ROW_MAPPER, id);
     }
  
     @Override
@@ -46,12 +46,12 @@ public class OrderReposImp implements OrderRepository{
 
 	@Override
 	public int changeStatus(String value, String id) {
-		return jdbcTemplate.update("UPDATE `orders` SET `status` = '" + value + "' WHERE `orders`.`id_order` = '" + id + "'");
+		return jdbcTemplate.update("UPDATE `orders` SET `status` = ? WHERE `orders`.`id_order` = ?", value, id);
 	}
 
 	@Override
 	public int changeDate(String value, String id) {
-		return jdbcTemplate.update("UPDATE `orders` SET `datenot` = '" + value + "' WHERE `orders`.`id_order` = '" + id + "'");
+		return jdbcTemplate.update("UPDATE `orders` SET `datenot` = ? WHERE `orders`.`id_order` = ?", value, id);
 	}
 
 }
